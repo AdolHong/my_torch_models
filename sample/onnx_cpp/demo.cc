@@ -8,8 +8,7 @@
 using namespace std;
 
 int main(){
-    
-    std::string fp_model = "../../models/softmax.onnx";
+    std::string fp_model = "../multiclass_iris/softmax.onnx";
     int num_threads = 5;
     int num_features = 4;
     int num_class = 3;

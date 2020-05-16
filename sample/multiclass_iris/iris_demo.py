@@ -7,7 +7,10 @@ from sklearn.model_selection import train_test_split
 import torch.onnx
 import onnxruntime
 
-from model import SoftmaxClassifier
+import sys
+sys.path.append("../..")
+
+from core.classifier import SoftmaxClassifier
 
 if __name__ == "__main__":
     iris = datasets.load_iris()
@@ -40,7 +43,7 @@ if __name__ == "__main__":
     # 保存模型    
     torch.onnx.export(model,                   # model being run
                       torch.tensor([[6.2, 3.4, 5.4, 2.3]]),               # model input (or a tuple for multiple inputs)
-                      "models/softmax.onnx",   # where to save the model (can be a file or file-like object)
+                      "./softmax.onnx",   # where to save the model (can be a file or file-like object)
                       export_params=True,      # store the trained parameter weights inside the model file
                       input_names = ['input'], # the model's input names
                       output_names = ['output']# the model's output names
@@ -49,7 +52,7 @@ if __name__ == "__main__":
 
 
     # 用onnx预测[6.2, 3.4, 5.4, 2.3], 比较精度
-    ort_session = onnxruntime.InferenceSession("models/softmax.onnx")
+    ort_session = onnxruntime.InferenceSession("./softmax.onnx")
     ort_inputs = {ort_session.get_inputs()[0].name: [[6.2, 3.4, 5.4, 2.3]]}
     ort_outs = ort_session.run(None, ort_inputs)
     print(ort_outs)
